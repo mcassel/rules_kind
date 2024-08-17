@@ -2,3 +2,6 @@
 /bazel-bin
 /bazel-out
 /bazel-testlogs
+
+rules_kind-*.tar.gz
+rules_kind-*.tar.gz.sha256
