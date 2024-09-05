@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if kind get clusters | grep ^{CLUSTER_NAME}$; then
+  echo "Cluster {CLUSTER_NAME} already exists. Skipping..."
+else
+  kind create cluster --name {CLUSTER_NAME}
+fi
