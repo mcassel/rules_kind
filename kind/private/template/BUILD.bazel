@@ -1,4 +1,6 @@
 exports_files([
+    "cluster.yaml.template",
     "create.sh.template",
     "delete.sh.template",
+    "local_registry.sh.template",
 ])
