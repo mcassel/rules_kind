@@ -1,12 +1,14 @@
 """Rule for deleting a kind cluster"""
 
+load("@bazel_skylib//lib:shell.bzl", "shell")
+
 def _delete_cluster_impl(ctx):
     out_exec = ctx.actions.declare_file(ctx.label.name + "_" + "delete.sh")
     ctx.actions.expand_template(
         template = ctx.file._delete_template,
         output = out_exec,
         substitutions = {
-            "{CLUSTER_NAME}": ctx.attr.cluster_name,
+            "{CLUSTER_NAME}": shell.quote(ctx.attr.cluster_name),
         },
         is_executable = True,
     )

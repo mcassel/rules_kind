@@ -1,5 +1,7 @@
 """Rule for defining and creating a local image registry"""
 
+load("@bazel_skylib//lib:shell.bzl", "shell")
+
 LocalRegistyInfo = provider(
     doc = "Provider for local registries",
     fields = {
@@ -16,7 +18,7 @@ def _local_registry_impl(ctx):
         template = ctx.file._local_registry_template,
         output = out_exec,
         substitutions = {
-            "{REGISTRY_NAME}": ctx.attr.registry_name,
+            "{REGISTRY_NAME}": shell.quote(ctx.attr.registry_name),
             "{REGISTRY_PORT}": str(ctx.attr.registry_port),
         },
         is_executable = True,
