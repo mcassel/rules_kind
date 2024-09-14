@@ -7,9 +7,9 @@ exports_files(glob(["**/*.bzl"]))
 filegroup(
     name = "bzl_srcs",
     srcs = glob(["**/*.bzl"]) + [
-        "//helm/private:bzl_srcs",
+        "//kind/private:bzl_srcs",
     ],
-    visibility = ["//:__subpackages__"],
+    visibility = ["//kind:__subpackages__"],
 )
 
 # This is the target rule authors should put in their "toolchains"
