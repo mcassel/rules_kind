@@ -21,6 +21,10 @@ def _create_cluster_impl(ctx):
         registry_exec = "./" + ctx.attr.registry[DefaultInfo].files_to_run.executable.short_path
         runfiles = runfiles + ctx.attr.registry[DefaultInfo].files.to_list()
 
+    # Toolchain
+    kind_toolchain = ctx.toolchains["//kind:toolchain_type"]
+    runfiles = runfiles + kind_toolchain.kindinfo.tool_files
+
     out_exec = ctx.actions.declare_file(ctx.label.name + "_" + "create.sh")
     ctx.actions.expand_template(
         template = ctx.file._create_template,
@@ -28,6 +32,7 @@ def _create_cluster_impl(ctx):
         substitutions = {
             "{CLUSTER_CONFIG}": out_config.short_path,
             "{CLUSTER_NAME}": shell.quote(ctx.attr.cluster_name),
+            "{KIND_BIN}": kind_toolchain.kindinfo.target_tool_path,
             "{REGISTRY_NAME}": shell.quote(registry_name),
             "{REGISTRY_PORT}": str(registry_port),
             "{REGISTRY_EXEC}": registry_exec,
@@ -63,4 +68,5 @@ create_cluster = rule(
             default = Label("//kind/private/template:create.sh.template"),
         ),
     },
+    toolchains = ["//kind:toolchain_type"],
 )
