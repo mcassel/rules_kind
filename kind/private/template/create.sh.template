@@ -3,10 +3,10 @@ set -o errexit
 
 {REGISTRY_EXEC}
 
-if kind get clusters | grep ^{CLUSTER_NAME}$; then
+if {KIND_BIN} get clusters | grep ^{CLUSTER_NAME}$; then
   echo "Cluster {CLUSTER_NAME} already exists. Skipping..."
 else
-  kind create cluster --name={CLUSTER_NAME} --config={CLUSTER_CONFIG}
+  {KIND_BIN} create cluster --name={CLUSTER_NAME} --config={CLUSTER_CONFIG}
 fi
 
 reg_name={REGISTRY_NAME}
@@ -15,7 +15,7 @@ reg_port={REGISTRY_PORT}
 if [[ -n "$reg_name" ]]; then
   echo "Updating nodes..."
   REGISTRY_DIR="/etc/containerd/certs.d/localhost:${reg_port}"
-  for node in $(kind get nodes --name {CLUSTER_NAME}); do
+  for node in $({KIND_BIN} get nodes --name {CLUSTER_NAME}); do
     docker exec "${node}" mkdir -p "${REGISTRY_DIR}"
     cat <<EOF | docker exec -i "${node}" cp /dev/stdin "${REGISTRY_DIR}/hosts.toml"
 [host."http://${reg_name}:5000"]
