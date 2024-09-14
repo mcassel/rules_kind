@@ -1,8 +1,13 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 
-filegroup(
-    name = "bzl_srcs",
-    srcs = glob(["**/*.bzl"]),
+bzl_library(
+    name = "rules",
+    srcs = [
+        "cluster.bzl",
+        "create_cluster.bzl",
+        "delete_cluster.bzl",
+        "local_registry.bzl",
+    ],
     visibility = ["//kind:__subpackages__"],
 )
 
