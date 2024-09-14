@@ -2,7 +2,15 @@ load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("//kind/private:resolved_toolchain.bzl", "resolved_toolchain")
 
 # For stardoc to reference the files
-exports_files(["defs.bzl"])
+exports_files(glob(["**/*.bzl"]))
+
+filegroup(
+    name = "bzl_srcs",
+    srcs = glob(["**/*.bzl"]) + [
+        "//helm/private:bzl_srcs",
+    ],
+    visibility = ["//:__subpackages__"],
+)
 
 # This is the target rule authors should put in their "toolchains"
 # attribute in order to get a runtime for the correct platform.
@@ -36,6 +44,10 @@ bzl_library(
     name = "defs",
     srcs = ["defs.bzl"],
     visibility = ["//visibility:public"],
+    deps = [
+        "//kind/private:bzl_srcs",
+        "@bazel_skylib//lib:shell",
+    ],
 )
 
 bzl_library(
